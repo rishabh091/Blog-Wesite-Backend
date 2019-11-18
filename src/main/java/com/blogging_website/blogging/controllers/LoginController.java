@@ -75,8 +75,11 @@ public class LoginController {
 
         System.out.println("Sending mail : "+jsonObject.getString("email"));
         try{
-            ForgetPasswordConfig.sendMail(jsonObject.getString("email"));
             userService.setNewPassword(jsonObject.getString("email"));
+            ForgetPasswordConfig.sendMail(jsonObject.getString("email"),
+                    "Skyline - Forget Password Service",
+                    "You messed up ? We still got you covered <br> Password : Skyline123@ <br> " +
+                            "<b>PLEASE DO NOT SHARE THIS WITH ANYONE</b>");
             return true;
         }
         catch (Exception e){

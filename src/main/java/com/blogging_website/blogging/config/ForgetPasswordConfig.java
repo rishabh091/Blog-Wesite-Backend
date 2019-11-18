@@ -13,7 +13,7 @@ import java.util.Properties;
 @Configuration
 public class ForgetPasswordConfig {
 
-    public static void sendMail(String userEmail) throws Exception{
+    public static void sendMail(String userEmail,String subject,String content) throws Exception{
         Properties properties=new Properties();
         properties.put("mail.smtp.auth","true");
         properties.put("mail.smtp.starttls.enable","true");
@@ -30,13 +30,12 @@ public class ForgetPasswordConfig {
         message.setFrom(new InternetAddress("rishabhmalhotra9211@gmail.com",false));
 
         message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(userEmail));
-        message.setSubject("Skyline - Forget Password Service");
+        message.setSubject(subject);
         message.setContent("SkyLine Email","text/html");
         message.setSentDate(new Date());
 
         MimeBodyPart mimeBodyPart=new MimeBodyPart();
-        mimeBodyPart.setContent("You messed up ? We still got you covered <br> Password : Skyline123@" +
-                "<br> <b>PLEASE DO NOT SHARE THIS WITH ANYONE</b>","text/html");
+        mimeBodyPart.setContent(content,"text/html");
 
         Multipart multipart=new MimeMultipart();
         multipart.addBodyPart(mimeBodyPart);

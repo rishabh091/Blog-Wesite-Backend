@@ -101,7 +101,7 @@ public class BlogService {
             if(blogs.get(i).getTitle().toLowerCase().contains(value.toLowerCase()) ||
             blogs.get(i).getCategory().toLowerCase().equals(value.toLowerCase()) ||
             blogs.get(i).getSearchDescription().toLowerCase().contains(value.toLowerCase()) ||
-            blogs.get(i).getUser().getUserName().toLowerCase().equals(value.toLowerCase())){
+            blogs.get(i).getUser().getUserName().toLowerCase().contains(value.toLowerCase())){
                 result.add(blogs.get(i));
             }
         }
@@ -195,5 +195,4 @@ public class BlogService {
         Collections.reverse(result);
         return result;
     }
-
 }

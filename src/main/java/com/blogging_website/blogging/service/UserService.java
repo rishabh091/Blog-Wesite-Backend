@@ -1,5 +1,6 @@
 package com.blogging_website.blogging.service;
 
+import com.blogging_website.blogging.config.ForgetPasswordConfig;
 import com.blogging_website.blogging.dao.UserRepository;
 import com.blogging_website.blogging.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class UserService {
@@ -63,5 +66,38 @@ public class UserService {
         user.get().setPassword("Skyline123@");
 
         userRepository.save(user.get());
+    }
+
+    public ArrayList<User> getUsers(Principal principal){
+        Optional<User> currentUser=userRepository.findByEmail(principal.getName());
+        ArrayList<User> allUsers=(ArrayList<User>) userRepository.findAll();
+
+        allUsers.remove(currentUser.get());
+
+        Collections.reverse(allUsers);
+        return allUsers;
+    }
+
+    public int sendOtp(String email) throws Exception{
+        int otp=createOtp();
+        String subject="Skyline Email Verification";
+        String content="<h1>Your email is used in sign up in skyline, Your otp is : "+otp;
+
+        ForgetPasswordConfig.sendMail(email,subject,content);
+
+        return otp;
+    }
+
+    private int createOtp(){
+        Random random=new Random();
+        int[] arr=new int[4];
+        String str="";
+
+        for(int i=0;i<4;i++){
+            arr[i]=random.nextInt(10);
+            str=str+arr[i];
+        }
+
+        return Integer.parseInt(str);
     }
 }
